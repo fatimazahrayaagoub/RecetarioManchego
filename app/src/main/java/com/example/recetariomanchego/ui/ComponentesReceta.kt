@@ -36,6 +36,13 @@ import com.example.recetariomanchego.data.Receta
 import com.example.recetariomanchego.data.recetasIniciales
 import com.example.recetariomanchego.ui.theme.RecetarioManchegoTheme
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.graphics.Color
+
 // Bloque reutilizable: no sabe en qué layout se va a colocar (lista o ficha).
 // Quien lo usa decide su tamaño con el modifier.
 @Composable
@@ -122,7 +129,9 @@ fun TarjetaReceta(
     expandida: Boolean,
     onAlternar: () -> Unit,
     onVerFicha: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAlternarFavorito: () -> Unit = {}
+
 ) {
     // Animación 1: el color de la tarjeta reacciona al estado "expandida",
     // que viene del ViewModel. label obligatorio en todas las animate*AsState.
@@ -170,8 +179,18 @@ fun TarjetaReceta(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+
+                IconButton(onClick = onAlternarFavorito) {
+                    Icon(
+                        imageVector = if(receta.favorita) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorito",
+                        tint=if (receta.favorita) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
             }
         }
+
 
         // Animación 3: el panel entra y sale con expandVertically / shrinkVertically.
         // El botón va debajo de la Card (no dentro) para evitar zonas clicables anidadas.

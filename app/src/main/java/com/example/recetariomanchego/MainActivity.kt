@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,6 +23,7 @@ import com.example.recetariomanchego.ui.FichaRecetaScreen
 import com.example.recetariomanchego.ui.ListaRecetasScreen
 import com.example.recetariomanchego.ui.RecetasViewModel
 import com.example.recetariomanchego.ui.theme.RecetarioManchegoTheme
+import androidx.compose.runtime.getValue
 
 sealed class Screen(val route: String) {
     data object Lista : Screen("lista")
@@ -50,11 +52,16 @@ fun AppNavigation(
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id") ?: -1
-            val receta = viewModel.recetaConId(id)
+
+            val recetas by viewModel.recetas.collectAsStateWithLifecycle()
+
+            val receta = recetas.firstOrNull { it.id == id }
+            
             if (receta != null) {
                 FichaRecetaScreen(
                     receta = receta,
-                    onVolver = { navController.popBackStack() }
+                    onVolver = { navController.popBackStack() },
+                    onAlternarFavorito = { viewModel.alternarFavorita(receta.id) }
                 )
             } else {
                 Text(

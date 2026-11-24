@@ -58,7 +58,8 @@ fun ListaRecetasScreen(
                     receta = receta,
                     expandida = expandidaId == receta.id,
                     onAlternar = { viewModel.alternarExpandida(receta.id) },
-                    onVerFicha = { onVerFicha(receta.id) }
+                    onVerFicha = { onVerFicha(receta.id) },
+                    onAlternarFavorito = { viewModel.alternarFavorita(receta.id) }
                 )
             }
         }
@@ -70,6 +71,7 @@ fun ListaRecetasScreen(
 fun FichaRecetaScreen(
     receta: Receta,
     onVolver: () -> Unit,
+    onAlternarFavorito: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // Punto crítico de adaptabilidad: se decide la disposición según la orientación.
