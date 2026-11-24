@@ -12,4 +12,6 @@
     <string name="cd_volver">Volver</string>
     <string name="volver">Volver</string>
     <string name="receta_no_encontrada">Receta no encontrada</string>
+    <string name="buscar_receta">Buscar receta</string>
+    <string name="sin_resultados">No se han encontrado recetas</string>
 </resources>
